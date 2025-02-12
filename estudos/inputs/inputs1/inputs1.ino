@@ -3,7 +3,7 @@
 void setup(void) {
     M5Cardputer.begin();
     M5Cardputer.Display.setTextColor(GREEN);
-    M5Cardputer.Display.setTextSize(2);
+    M5Cardputer.Display.setTextSize(1);
     M5Cardputer.Display.setTextDatum(middle_center);
 }
 
