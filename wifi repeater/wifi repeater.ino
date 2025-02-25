@@ -59,6 +59,10 @@ void setup(void) {
     // }
 }
 
+// std::vector<WiFiClient *> clients;
+// std::map<connection, WiFiClient> clients;
+std::set<WiFiClient, WiFiClientCompare> clients;
+
 void loop(void) {
     // WiFiClient client = server.available();
     // if (client) {
@@ -128,31 +132,70 @@ void loop(void) {
     // }
 
 
-                                            // CONSEGUI REENCAMINHAR BYTES A OUTRO IP Q ESTA CONECTADO NO MESMO WIFI
-    WiFiClient client = server.available();
-    if (client) {
-        M5Cardputer.Display.printf("cliente na porta: %d\n", client.remotePort());
-        while (client.connected()) {
-            if (client.available()) {
-                WiFiClient forwardClient;
-                // if (forwardClient.connect("192.168.137.1", 3000)) { // SERVIDOR CRIADO COM NODE.JS E COMPARTILHADO LOCALMENTE
-                if (forwardClient.connect("google.com", 80)) {
-                    forwardClient.print(client.readString());
 
-                    while (!forwardClient.available()) {
-                        delay(10);
-                    }
-                    while (forwardClient.available()) {
-                        client.print(forwardClient.readString());
-                    }
-                    forwardClient.stop();
-                } else {
-                    M5Cardputer.Display.println("nao foi respondido");
-                }
-            }
-        }
-        M5Cardputer.Display.print("desconectou");
-        client.stop();
+    // WiFiClient client = server.available();
+    // if (client) {
+    //     M5Cardputer.Display.printf("cliente na porta: %d\n", client.remotePort());
+    //     while (client.connected()) {
+    //         if (client.available()) {
+    //             WiFiClient forwardClient;
+    //             if (forwardClient.connect("192.168.137.1", 3000)) { // SERVIDOR CRIADO COM NODE.JS E COMPARTILHADO LOCALMENTE
+    //                 // if (forwardClient.connect("google.com", 443)) {
+
+    //                 String teste = client.readString();
+    //                 forwardClient.print(teste);
+    //                 M5Cardputer.Display.print(teste);
+
+    //                 while (!forwardClient.available()) {
+    //                     delay(10);
+    //                 }
+    //                 while (forwardClient.available()) {
+    //                     client.print(forwardClient.readString());
+    //                 }
+    //                 forwardClient.stop();
+    //                 break ;
+    //             } else {
+    //                 M5Cardputer.Display.println("nao foi respondido");
+    //             }
+    //         }
+    //     }
+    //     M5Cardputer.Display.println("desconectou");
+    //     client.stop();
+    // }
+
+
+
+    // WiFiClient newClient = server.available();
+    // if (newClient) {
+    //     clients.push_back(new WiFiClient(newClient));
+    //     M5Cardputer.Display.printf("novo cliente: %d\n", clients.size());
+    // }
+
+    WiFiClient newClient = server.available();
+    if (newClient) {
+        clients.insert(newClient);
+
+        M5Cardputer.Display.println("novo cliente");
+        M5Cardputer.Display.print("IP do Cliente: ");
+        M5Cardputer.Display.println(newClient.remoteIP());
+        M5Cardputer.Display.print("Porta do Cliente: ");
+        M5Cardputer.Display.println(newClient.remotePort());
+        M5Cardputer.Display.print("\n\n");
     }
-                                            // CONSEGUI REENCAMINHAR BYTES A OUTRO IP Q ESTA CONECTADO NO MESMO WIFI
+
+    for (auto it = clients.begin(); it != clients.end(); ) {
+        if (!it->connected()) { // PERCORRER UM set E CHARMAR UMA METODO NAO CONST
+            it->stop();
+            it = clients.erase(it);
+
+            M5Cardputer.Display.println("desconectou");
+            M5Cardputer.Display.print("IP do Cliente: ");
+            M5Cardputer.Display.println(it->remoteIP());
+            M5Cardputer.Display.print("Porta do Cliente: ");
+            M5Cardputer.Display.println(it->remotePort());
+            M5Cardputer.Display.print("\n\n");
+        } else {
+            ++it;
+        }
+    }
 }

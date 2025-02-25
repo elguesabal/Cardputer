@@ -1,5 +1,9 @@
 #include "header.h"
 
+/// @brief CONECTA A UMA REDE WIFI JA EXISTENTE
+/// @param ssid NOME DO WIFI
+/// @param password SENHA DO WIFI
+/// @return RETORNA true SE DEU TUDO CERTO E false SE OUVE ALGUM ERRO
 bool connectWifi(const char *ssid, const char *password) {
     WiFi.begin(ssid, password);
 
