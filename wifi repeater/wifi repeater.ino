@@ -61,7 +61,8 @@ void setup(void) {
 
 // std::vector<WiFiClient *> clients;
 // std::map<connection, WiFiClient> clients;
-std::set<WiFiClient, WiFiClientCompare> clients;
+// std::set<WiFiClient, WiFiClientCompare> clients;
+std::set<WiFiClient *> clients;
 
 void loop(void) {
     // WiFiClient client = server.available();
@@ -171,9 +172,11 @@ void loop(void) {
     //     M5Cardputer.Display.printf("novo cliente: %d\n", clients.size());
     // }
 
+
+
     WiFiClient newClient = server.available();
     if (newClient) {
-        clients.insert(newClient);
+        clients.insert(new WiFiClient(newClient));
 
         M5Cardputer.Display.println("novo cliente");
         M5Cardputer.Display.print("IP do Cliente: ");
@@ -181,21 +184,46 @@ void loop(void) {
         M5Cardputer.Display.print("Porta do Cliente: ");
         M5Cardputer.Display.println(newClient.remotePort());
         M5Cardputer.Display.print("\n\n");
+
+        // newClient.print("aaaaaaaaaaaaaa");
     }
 
     for (auto it = clients.begin(); it != clients.end(); ) {
-        if (!it->connected()) { // PERCORRER UM set E CHARMAR UMA METODO NAO CONST
-            it->stop();
+        // M5Cardputer.Display.printf("port: %d\n", (*it)->remotePort());
+        if (!(*it)->connected()) {
+            // M5Cardputer.Display.println("entrou no if");
+            (*it)->stop();
+            // delete it;
             it = clients.erase(it);
 
             M5Cardputer.Display.println("desconectou");
             M5Cardputer.Display.print("IP do Cliente: ");
-            M5Cardputer.Display.println(it->remoteIP());
+            M5Cardputer.Display.println((*it)->remoteIP());
             M5Cardputer.Display.print("Porta do Cliente: ");
-            M5Cardputer.Display.println(it->remotePort());
+            M5Cardputer.Display.println((*it)->remotePort());
             M5Cardputer.Display.print("\n\n");
         } else {
+            // M5Cardputer.Display.println("ta conectado");
+            M5Cardputer.Display.printf("ta conectado na porta: %d\n", (*it)->remotePort());
+            // (*it)->print("aaaaaaaaaaaaaa"); // PQ ISSO TA DANDO ERRO?
             ++it;
         }
+        // M5Cardputer.Display.println("fim do for");
     }
+
+
+
+    // WiFiClient newClient = server.available();
+    // if (newClient) {
+    //     while (newClient.connected()) {
+    //         M5Cardputer.Display.println("ta conectado");
+    //         newClient.print("aaaaaaaaaaaaaa");
+    //         delay(1000);
+    //     }
+    //     M5Cardputer.Display.println("desconectou");
+    // }
+
+
+    // M5Cardputer.Display.print("\n\n");
+    // delay(1000);
 }
