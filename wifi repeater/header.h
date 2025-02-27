@@ -3,6 +3,7 @@
 
 #include <M5Cardputer.h>
 #include <WiFi.h>
+// #include <DNSServer.h>
 #include <set>
 
 
@@ -23,8 +24,15 @@
 
 
 extern WiFiServer server;
+// extern DNSServer dnsServer;
 
+// ./wifi.cpp
 bool connectWifi(const char *ssid, const char *password);
+
+// ./router.cpp
 bool routerWifi(const char *ssid, const char *password);
+
+// ./comm.cpp
+String request(std::string url, uint16_t port, String requestClient);
 
 #endif
