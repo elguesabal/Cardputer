@@ -3,7 +3,7 @@
 
 #include <M5Cardputer.h>
 #include <WiFi.h>
-// #include <DNSServer.h>
+#include <DNSServer.h>
 #include <set>
 
 
@@ -22,9 +22,10 @@
 // std::set<WiFiClient, WiFiClientCompare> clients;
 
 
+#define DNS_PORT 53
 
 extern WiFiServer server;
-// extern DNSServer dnsServer;
+extern DNSServer dnsServer;
 
 // ./wifi.cpp
 bool connectWifi(const char *ssid, const char *password);

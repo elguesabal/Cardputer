@@ -1,7 +1,8 @@
 #include "header.h"
 
 WiFiServer server(80);
-// DNSServer dnsServer;
+// WebServer webServer(80);
+DNSServer dnsServer;
 
 void setup(void) {
     M5Cardputer.begin();
@@ -17,8 +18,13 @@ void setup(void) {
         }
     }
 
-    // dnsServer.start(53, "*", "8.8.8.8");
+    // dnsServer.start(DNS_PORT, "*", WiFi.softAPIP());
     server.begin();
+
+    server.on("/teste", []() {
+        String teste = "vampetaaaa";
+        webServer.send(200, "text/html", teste); // TESTAR ISSO DPS
+    });
 
 
 
@@ -65,37 +71,39 @@ void setup(void) {
 std::set<WiFiClient *> clients;
 
 void loop(void) {
-    // dnsServer.processNextRequest();
+    dnsServer.processNextRequest();  
 
-    WiFiClient newClient = server.available();
-    if (newClient) {
-        clients.insert(new WiFiClient(newClient));
-        M5Cardputer.Display.print("novo cliente -> ");
-        M5Cardputer.Display.print(newClient.remoteIP());
-        M5Cardputer.Display.print(":");
-        M5Cardputer.Display.println(newClient.remotePort());
-    }
 
-    for (auto it = clients.begin(); it != clients.end(); ) {
-        if (!(*it)->connected()) {
-            M5Cardputer.Display.println("desconectou");
-            (*it)->stop();
-            delete *it;
-            it = clients.erase(it);
-        } else if ((*it)->available()) {
-            String requestClient = (*it)->readString();
-            // delay(1000);
-            // M5Cardputer.Display.print(requestClient);
-            // String res = request("192.168.137.1", 3000, requestClient);
-            String res = request("192.168.4.2", 3000, requestClient);
 
-            if (res) {
-                (*it)->print(res);
-            } else {
-                // M5Cardputer.Display.println("deu erro no trem"); // NAO SEI OQ RESPONDER
-            }
-        } else {
-            ++it;
-        }
-    }
+    // WiFiClient newClient = server.available();
+    // if (newClient) {
+    //     clients.insert(new WiFiClient(newClient));
+    //     M5Cardputer.Display.print("novo cliente -> ");
+    //     M5Cardputer.Display.print(newClient.remoteIP());
+    //     M5Cardputer.Display.print(":");
+    //     M5Cardputer.Display.println(newClient.remotePort());
+    // }
+
+    // for (auto it = clients.begin(); it != clients.end(); ) {
+    //     if (!(*it)->connected()) {
+    //         M5Cardputer.Display.println("desconectou");
+    //         (*it)->stop();
+    //         delete *it;
+    //         it = clients.erase(it);
+    //     } else if ((*it)->available()) {
+    //         String requestClient = (*it)->readString();
+    //         // delay(1000);
+    //         // M5Cardputer.Display.print(requestClient);
+    //         // String res = request("192.168.137.1", 3000, requestClient);
+    //         String res = request("192.168.4.2", 3000, requestClient);
+
+    //         if (res) {
+    //             (*it)->print(res);
+    //         } else {
+    //             // M5Cardputer.Display.println("deu erro no trem"); // NAO SEI OQ RESPONDER
+    //         }
+    //     } else {
+    //         ++it;
+    //     }
+    // }
 }
