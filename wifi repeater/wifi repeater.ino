@@ -71,7 +71,7 @@ void setup(void) {
 std::set<WiFiClient *> clients;
 
 void loop(void) {
-    dnsServer.processNextRequest();  
+    dnsServer.processNextRequest();
 
 
 
