@@ -1,14 +1,24 @@
 #include "header.h"
 
+/// @brief INICIA O PONTO DE ACESSO WIFI E PRINTA NA TELA O SSID E PASSWORD
 void acessPointerStart(void) {
     WiFi.mode(WIFI_AP);
-    if (!WiFi.softAP(SSID, PASSWORD)) {
+    #if defined(PASSWORD)
+        bool wifi = WiFi.softAP(SSID, PASSWORD);
+    #else
+        bool wifi = WiFi.softAP(SSID);
+    #endif
+    if (!wifi) {
         M5Cardputer.Display.println("wifi nao criado");
         while (true) {
 
         }
     }
     M5Cardputer.Display.printf("Ssid: %s\n", SSID);
-    M5Cardputer.Display.printf("Password: %s\n", PASSWORD);
+    #if defined(PASSWORD)
+        M5Cardputer.Display.printf("Password: %s\n", PASSWORD);
+    #endif
     M5Cardputer.Display.printf("Host: %s\n", WiFi.softAPIP().toString().c_str());
 }
+
+

@@ -4,6 +4,7 @@ WebServer webServer(80);
 
 void setup(void) {
     cardputerStart();
+    sdStart();
     acessPointerStart();
     webServerStart();
 }

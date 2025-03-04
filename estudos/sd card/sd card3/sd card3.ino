@@ -22,7 +22,7 @@ void setup(void) {
     // INICIA O CARTAO SD
 
     // ABRE O ARQUIVO NO MODO LEITURA E LE O ARQUIVO
-    File file = SD.open("/42.txt");
+    File file = SD.open("/index.html");
     if (!file) {
         M5Cardputer.Display.drawString("erro ao abrir arquivo", M5Cardputer.Display.width() / 2, M5Cardputer.Display.height() / 2);
         return ;

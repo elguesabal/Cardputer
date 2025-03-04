@@ -8,11 +8,12 @@
 #include <SD.h>
 
 #define SSID "vampeta"              // NOME DA REDE WIFI
-#define PASSWORD "12345678"         // SENHA DA REDE WIFI
+// #define PASSWORD "12345678"         // SENHA DA REDE WIFI (PODE REMOVER CASO NAO QUERIA SENHA)
 #define SCK 40                      // SCK:G40
 #define MISO 39                     // MISO:G39
 #define MOSI 14                     // MOSI:G14
 #define CS 12                       // CS:G12
+#define PATH_DIR "/Pages"           // PASTA ONDE SE DEVE ENCONTRAR AS PAGINAS WEBS
 
 extern WebServer webServer;
 
@@ -22,12 +23,13 @@ void cardputerStart(void);
 // ./wifi.cpp
 void acessPointerStart(void);
 
-// ./server.cpp
+// ./webServer.cpp
 void webServerStart(void);
 void home(void);
+void getRoute(void);
 
-// ./sd card.cpp
+// ./sdCard.cpp
 void sdStart(void);
-String getPage(const char *path);
+String getPage(String path);
 
 #endif
