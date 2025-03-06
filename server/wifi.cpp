@@ -9,16 +9,20 @@ void acessPointerStart(void) {
         bool wifi = WiFi.softAP(SSID);
     #endif
     if (!wifi) {
-        M5Cardputer.Display.println("wifi nao criado");
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Wifi nao criado");
+        #endif
         while (true) {
 
         }
     }
-    M5Cardputer.Display.printf("Ssid: %s\n", SSID);
-    #if defined(PASSWORD)
-        M5Cardputer.Display.printf("Password: %s\n", PASSWORD);
+    #if defined(M5CARDPUTER)
+        M5CARDPUTER.printf("Ssid: %s\n", SSID);
+        #if defined(PASSWORD)
+            M5CARDPUTER.printf("Password: %s\n", PASSWORD);
+        #endif
+        M5CARDPUTER.printf("Host: %s\n", WiFi.softAPIP().toString().c_str());
     #endif
-    M5Cardputer.Display.printf("Host: %s\n", WiFi.softAPIP().toString().c_str());
 }
 
 

@@ -3,25 +3,19 @@
 /// @brief INICIA O CARTAO SD
 void sdStart(void) {
     SPI.begin(SCK, MISO, MOSI, CS);
-
     if (!SD.begin(CS, SPI, 25000000)) {
-        M5Cardputer.Display.println("sd nao disponivel");
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("sd nao disponivel");
+        #endif
         while (true) {
 
         }
     }
 }
 
-/// @brief BUSCA UM ARQUIVO NO CARTAO SD E RETORNA O CONTEUDO DO ARQUIVO
-/// @param path CAMINHO DO ARQUIVO COMPLETO (APARTIR DO "/Pages" Q NAO DEVE SER INCLUSO NO path)
-/// @return RETONAR O CONTEUDO DO ARQUIVO E CASO OCORRA ALGUM ERRO RETORNA UMA STRING VAZIA
-String getPage(String path) {
-    File file = SD.open(path);
-
-    if (!file) {
-        return ("");
-    }
-    String html = file.readString();
-    file.close();
-    return (html);
+/// @brief BUSCA UM ARQUIVO NO CARTAO SD E RETORNA O FILEDESCRIPTION
+/// @param path CAMINHO DO ARQUIVO COMPLETO (APARTIR DO "/Pages" Q DEVE SER INCLUSO NO path)
+/// @return RETONAR UMA OBJETO File Q CONTEM O FD (O USUARIO DEVE VERIFICAR SE O ARQUIVO FOI ABERTO)
+File getFile(String path) {
+    return (SD.open(path.c_str()));
 }

@@ -11,4 +11,5 @@ void setup(void) {
 
 void loop(void) {
     webServer.handleClient();
+    // delay(2);//allow the cpu to switch to other tasks // ISSO E NECESSARIO??
 }
