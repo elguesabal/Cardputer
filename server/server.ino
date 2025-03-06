@@ -1,15 +1,21 @@
 #include "header.h"
 
-WebServer webServer(80);
+// WebServer frontEnd(80);
+// WebServer backEnd(4242);
+
+WebServer *frontEnd = nullptr;
+WebServer *backEnd = nullptr;
 
 void setup(void) {
     cardputerStart();
     sdStart();
     acessPointerStart();
-    webServerStart();
+    frontEndStart();
+    backEndStart();
 }
 
 void loop(void) {
-    webServer.handleClient();
-    // delay(2);//allow the cpu to switch to other tasks // ISSO E NECESSARIO??
+    frontEnd->handleClient();
+    backEnd->handleClient();
+    delay(2);
 }

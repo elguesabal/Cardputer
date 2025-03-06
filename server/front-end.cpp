@@ -10,23 +10,40 @@ String cute(const String &url) {
     return (urlReturn);
 }
 
-/// @brief INICIA A API E DEFINE AS ROTAS
-/// @brief COMO AS OUTRAS ROTAS ALEM DO HOME SAO DEFINIDAS PELA EXISTENCIA DE UM ARQUIVO NO SD QUALQUER OUTRA ROTA ACONTECE NO METODO "nNotFound"
-void webServerStart(void) {
-    webServer.on("/", home);
-    webServer.onNotFound(getRoute);
-    webServer.begin();
-}
-
-/// @brief RESPONDE A ROTA HOME CASO TENHA O ARQUIVO "/Pages/index.html"
-void home(void) {
-    File file = getFile(String(PATH_DIR) + "/index.html");
-
-    if (!file) {
-        webServer.send(404, "text/html", "<p>Erro: Pagina home nao existe (adicione um arquivo html na pasta \"Pages\")</p>");
+/// @brief INICIA O FRONT END E DEFINE AS ROTAS
+/// @brief COMO AS OUTRAS ROTAS ALEM DO HOME SAO DEFINIDAS PELA EXISTENCIA DE UM ARQUIVO NO SD QUALQUER OUTRA ROTA ACONTECE NO METODO "onNotFound"
+void frontEndStart(void) {
+    #if !defined(PATH_FRONT_END)
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Front end nao iniciado");
+        #endif
+        return ;
+    #endif
+    if (!checkPath(PATH_FRONT_END)) {
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Pasta \"/Front-end\" ausente (Front end nao iniciado)");
+        #endif
         return ;
     }
-    webServer.streamFile(file, "text/html");
+    // frontEnd = new WebServer(PORT_FRONT_END); // NAO SEI PQ TA DANDO ERRO NA INICIALIZACAO (TALVEZ SEJA ALGUMA CONSTANTE NAO DEFINIDA TENTANDO SER ACESSADA)
+    // frontEnd->on("/", home);
+    // frontEnd->onNotFound(getRoute);
+    // frontEnd->begin();
+    // #if defined(M5CARDPUTER)
+    //     M5CARDPUTER.printf("Front end iniciado na porta %d\n", PORT_FRONT_END);
+    // #endif
+}
+
+#if defined(PATH_FRONT_END)
+/// @brief RESPONDE A ROTA HOME CASO TENHA O ARQUIVO "/Pages/index.html"
+void home(void) {
+    File file = getFile(String(PATH_FRONT_END) + "/index.html");
+
+    if (!file) {
+        frontEnd->send(404, "text/html", "<p>Erro: Pagina home nao existe (adicione um arquivo html na pasta \"Pages\")</p>");
+        return ;
+    }
+    frontEnd->streamFile(file, "text/html");
     file.close();
 }
 
@@ -57,19 +74,24 @@ String getType(String path) {
     } else {
         return ("text/plain");
     }
+
+    // TESTAR ISSO DPS
+    // if (server.hasArg("download")) {
+    //     return ("application/octet-stream");
+    // }
 }
 
 /// @brief PROCURA O ARQUIVO (OU PAGINA HTML) SEGUINDO A URL PASSADA NA ROTA E CASO NAO EXISTA O ARQUIVO CITADO ENVIA UMA MENSAGEM DE ERRO
 void getRoute(void) {
-    String path = PATH_DIR + cute(webServer.uri()) + (cute(webServer.uri()).indexOf(".") == -1 ? ".html" : "");
+    String path = PATH_FRONT_END + cute(frontEnd->uri()) + (cute(frontEnd->uri()).indexOf(".") == -1 ? ".html" : "");
     String type = getType(path);
     File file = getFile(path);
 
     if (!file) {
-        webServer.send(404, "text/html", "<p>Erro: \"" + webServer.uri() + "\" nao encontrado</p>");
+        frontEnd->send(404, "text/html", "<p>Erro: \"" + frontEnd->uri() + "\" nao encontrado</p>");
         return ;
     }
-    webServer.streamFile(file, type) != file.size();
-    // DBG_OUTPUT_PORT.println("Sent less data than expected!"); // NAO ENTENDI MT BEM (PESQUISAR MELHOR DPS)
+    frontEnd->streamFile(file, type);
     file.close();
 }
+#endif

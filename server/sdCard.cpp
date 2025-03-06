@@ -13,9 +13,15 @@ void sdStart(void) {
     }
 }
 
+/// @brief VERIFICA SE EXISTE UMA PASTA OU ARQUIVO
+/// @param path CAMINHO COMPLETO A SRE VERIFICADO
+bool checkPath(const char *path) {
+    return (SD.exists(path));
+}
+
 /// @brief BUSCA UM ARQUIVO NO CARTAO SD E RETORNA O FILEDESCRIPTION
-/// @param path CAMINHO DO ARQUIVO COMPLETO (APARTIR DO "/Pages" Q DEVE SER INCLUSO NO path)
-/// @return RETONAR UMA OBJETO File Q CONTEM O FD (O USUARIO DEVE VERIFICAR SE O ARQUIVO FOI ABERTO)
+/// @param path CAMINHO DO ARQUIVO COMPLETO
+/// @return RETONAR UMA OBJETO File QUE CONTEM O FD (O USUARIO DEVE VERIFICAR SE O ARQUIVO FOI ABERTO)
 File getFile(String path) {
     return (SD.open(path.c_str()));
 }
