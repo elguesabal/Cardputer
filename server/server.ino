@@ -1,8 +1,5 @@
 #include "header.h"
 
-// WebServer frontEnd(80);
-// WebServer backEnd(4242);
-
 WebServer *frontEnd = nullptr;
 WebServer *backEnd = nullptr;
 
@@ -15,7 +12,11 @@ void setup(void) {
 }
 
 void loop(void) {
-    frontEnd->handleClient();
-    backEnd->handleClient();
+    #if defined(PORT_FRONT_END)
+        frontEnd->handleClient();
+    #endif
+    #if defined(PORT_BACK_END)
+        backEnd->handleClient();
+    #endif
     delay(2);
 }
