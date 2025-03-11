@@ -26,6 +26,7 @@ extern WebServer *backEnd;
 
 // ./cardputer.cpp
 void cardputerStart(void);
+void vampeta(void);
 
 // ./wifi.cpp
 void acessPointerStart(void);
