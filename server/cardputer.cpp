@@ -2,14 +2,13 @@
 
 /// @brief INICIA E CONFIGURA O DISPLAY DO CARDPUTER
 void cardputerStart(void) {
-    #if !defined(M5CARDPUTER)
-        return ;
+    #if defined(M5CARDPUTER)
+        M5Cardputer.begin();
+        M5CARDPUTER.setTextScroll(true);
+        M5CARDPUTER.setTextColor(GREEN);
+        M5CARDPUTER.setTextSize(1);
+        vampeta();
     #endif
-    M5Cardputer.begin();
-    M5CARDPUTER.setTextScroll(true);
-    M5CARDPUTER.setTextColor(GREEN);
-    M5CARDPUTER.setTextSize(1);
-    vampeta();
 }
 
 /// @brief TELA DE LOAD INICIAL
@@ -271,7 +270,9 @@ void vampeta(void) {
         0x00, 0x00
     };
 
-    M5CARDPUTER.drawBitmap(0, 0, img, 240, 135, WHITE);
-    delay(3000);
-    M5CARDPUTER.fillRect(0, 0, M5CARDPUTER.width(), M5CARDPUTER.height(), BLACK);
+    #if defined(M5CARDPUTER)
+        M5CARDPUTER.drawBitmap(0, 0, img, 240, 135, WHITE);
+        delay(3000);
+        M5CARDPUTER.fillRect(0, 0, M5CARDPUTER.width(), M5CARDPUTER.height(), BLACK);
+    #endif
 }

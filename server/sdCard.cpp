@@ -1,15 +1,18 @@
 #include "header.h"
 
-/// @brief INICIA O CARTAO SD
+/// @brief INICIA O CARTAO SD E CASO O CARTAO NAO ESTEJA PRESENTE ESPERA ATE UM CARTAO SER INSERIDO
 void sdStart(void) {
     SPI.begin(SCK, MISO, MOSI, CS);
     if (!SD.begin(CS, SPI, 25000000)) {
         #if defined(M5CARDPUTER)
-            M5CARDPUTER.println("sd nao disponivel");
+            M5CARDPUTER.println("Aguardando insercao do carta SD...");
         #endif
-        while (true) {
-
+        while (!SD.begin(CS, SPI, 25000000)) {
+            delay(1000);
         }
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Cartao SD inserido");
+        #endif
     }
 }
 
@@ -25,3 +28,7 @@ bool checkPath(const char *path) {
 File getFile(String path) {
     return (SD.open(path.c_str()));
 }
+
+// bool checkSD(void) {
+        // PROXIMO PASSO E VERIFICAR SE O CARTAO FOI REMOVIDO E PAUSAR O SERVER
+// }
