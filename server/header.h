@@ -35,6 +35,7 @@ void acessPointerStart(void);
 void sdStart(void);
 bool checkPath(const char *path);
 File getFile(String path);
+void checkSD(void);
 
 // ./front-end.cpp
 void frontEndStart(void);

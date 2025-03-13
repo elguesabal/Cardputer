@@ -12,6 +12,7 @@ void setup(void) {
 }
 
 void loop(void) {
+    checkSD();
     #if defined(PORT_FRONT_END)
         frontEnd->handleClient();
     #endif
