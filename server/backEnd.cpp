@@ -24,6 +24,13 @@ void routesBackEnd(void) {
     });
     backEnd->on("/img", getImg);
     backEnd->on("/json", getJson);
+    // backEnd->on("/teste", HTTP_GET, []() {
+    //     backEnd->send(200, "text/plain", "metodo get");
+    // });
+    // backEnd->on("/teste", HTTP_POST, []() {
+    //     backEnd->send(200, "text/plain", "metodo post");
+    // });
+    backEnd->on("/upload/image", HTTP_POST, uploadImage);
     backEnd->onNotFound([]() {
         backEnd->send(404, "text/plain", "Erro 404: Rota nao encontrada");
     });
@@ -65,4 +72,41 @@ void getJson(void) {
     }
     backEnd->streamFile(file, getType(json));
     file.close();
+}
+
+void uploadImage(void) {
+    HTTPUpload &img = backEnd->upload();
+    File file;
+
+    // if (img.status == UPLOAD_FILE_START) {
+    //     file = SD.open("/Back-end/img/teste.jpg");
+    // }
+
+    // if (img.status == UPLOAD_FILE_WRITE) {
+    //     if (file) {
+    //         file.write(img.buf, img.currentSize);
+    //     }
+    // }
+
+    // if (img.status == UPLOAD_FILE_END) {
+    //     if (file) {
+    //         file.close();
+    //         backEnd->send(200, "text/plain", "Upload concluido");
+    //     } else {
+    //         backEnd->send(500, "text/plain", "Erro ao salvar o arquivo");
+    //     }
+    // }
+
+
+
+    file = SD.open("/Back-end/img/teste.jpg");
+    if (file) {
+        file.write(img.buf, img.currentSize);
+    }
+    if (file) {
+        file.close();
+        backEnd->send(200, "text/plain", "Upload concluido");
+    } else {
+        backEnd->send(500, "text/plain", "Erro ao salvar o arquivo");   // TA SEMPRE DANDO ERRO
+    }
 }
