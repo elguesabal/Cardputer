@@ -48,7 +48,7 @@ void backEndStart(void);
 void routesBackEnd(void);
 void getImg(void);
 void getJson(void);
-void uploadImage(void);
+void uploadFile(void);
 
 // ./utils.cpp
 String cutUrl(const String &url, char c);

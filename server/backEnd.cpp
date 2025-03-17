@@ -24,13 +24,9 @@ void routesBackEnd(void) {
     });
     backEnd->on("/img", getImg);
     backEnd->on("/json", getJson);
-    // backEnd->on("/teste", HTTP_GET, []() {
-    //     backEnd->send(200, "text/plain", "metodo get");
-    // });
-    // backEnd->on("/teste", HTTP_POST, []() {
-    //     backEnd->send(200, "text/plain", "metodo post");
-    // });
-    backEnd->on("/upload/image", HTTP_POST, uploadImage);
+    backEnd->on("/upload/img", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
+    backEnd->on("/upload/json", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
+    backEnd->on("/upload/pdf", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
     backEnd->onNotFound([]() {
         backEnd->send(404, "text/plain", "Erro 404: Rota nao encontrada");
     });
@@ -74,39 +70,33 @@ void getJson(void) {
     file.close();
 }
 
-void uploadImage(void) {
-    HTTPUpload &img = backEnd->upload();
-    File file;
+/// @brief RECEBE E SALVA UM ARQUIVO NO CARTAO SD
+/// @warning CASO O ARGUMENTO "name" ESTEJA AUSENTE RESPONDE COM O STATUS 400 "BAD REQUEST"
+/// @warning CASO EXISTA UM ARQUIVO COM O MESMO NOME CITADO POR "name" NA MESMA PASTA RESPONDE COM 409 "CONFLICT"
+/// @note CASO TUDO OCORRA SEM ERROS ESTA FUNCAO NAO RESPONDE E SIM ESPERA Q SEJA PASSADO OUTRA FUNCAO DENTRO DO METODO "on" QUE RESPONDA COM STATUS 200
+void uploadFile(void) {
+    HTTPUpload &upload = backEnd->upload();
+    static File file;
+    String name = backEnd->arg("name");
+    String path = PATH_BACK_END + backEnd->uri().substring(backEnd->uri().lastIndexOf('/')) + "/" + name;
 
-    // if (img.status == UPLOAD_FILE_START) {
-    //     file = SD.open("/Back-end/img/teste.jpg");
-    // }
-
-    // if (img.status == UPLOAD_FILE_WRITE) {
-    //     if (file) {
-    //         file.write(img.buf, img.currentSize);
-    //     }
-    // }
-
-    // if (img.status == UPLOAD_FILE_END) {
-    //     if (file) {
-    //         file.close();
-    //         backEnd->send(200, "text/plain", "Upload concluido");
-    //     } else {
-    //         backEnd->send(500, "text/plain", "Erro ao salvar o arquivo");
-    //     }
-    // }
-
-
-
-    file = SD.open("/Back-end/img/teste.jpg");
-    if (file) {
-        file.write(img.buf, img.currentSize);
+    if (!name.length()) {
+        backEnd->send(400, "text/plain", "Erro 400: Campo \"name\" ausente");
+        return ;
     }
-    if (file) {
-        file.close();
-        backEnd->send(200, "text/plain", "Upload concluido");
-    } else {
-        backEnd->send(500, "text/plain", "Erro ao salvar o arquivo");   // TA SEMPRE DANDO ERRO
+    if (upload.status == UPLOAD_FILE_START) {
+        if (checkPath(path.c_str())) {
+            backEnd->send(409, "text/plain", "Erro 409: Arquivo com este nome ja existente");
+            return ;
+        }
+        file = SD.open(path, FILE_WRITE);
+    } else if (upload.status == UPLOAD_FILE_WRITE) {
+        if (file) {
+            file.write(upload.buf, upload.currentSize);
+        }
+    } else if (upload.status == UPLOAD_FILE_END) {
+        if (file) {
+            file.close();
+        }
     }
 }
