@@ -29,12 +29,60 @@ Cardputer/
 - **API back-end**: Processa requisições HTTP e retorna respostas dinâmicas.
 - **Gerenciamento de conexões**: Permite acesso simultâneo de múltiplos dispositivos.
 
-## Configuração e Compilação
+## Rodando localmente pelo cmd no Windows
 
-*******
+Clone o projeto
+
+```bash
+  git clone <link do repositório>
+```
+
+Entre no diretório do projeto
+
+```bash
+  cd <diretório do projeto>
+```
+
+Compile o projeto para binário
+
+```bash
+  arduino-cli compile --fqbn m5stack:esp32:m5stack_cardputer .
+```
+
+Fazendo uploado do binário
+
+```bash
+  arduino-cli upload -p COM3 --fqbn m5stack:esp32:m5stack_cardputer .
+```
 
 ## Uso
 
 1. Conecte-se ao WiFi criado pelo Cardputer.
 2. Acesse o front-end via navegador digitando o endereço do servidor.
 3. Utilize a API back-end conforme a documentação da API.
+
+
+## Documentação da API de teste
+
+### Front end
+
+#### Retorna todos os itens
+
+```http
+  GET "/"
+```
+
+#### Retorna 2 possíveis respostas:
+
+status(200): 
+```http
+  <arquivo>.html
+```
+
+status(404):
+```http
+  Erro 404: Pagina home nao existe (adicione um arquivo "index.html" na pasta "Back-end\")
+```
+
+
+### Back end
