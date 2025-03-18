@@ -34,7 +34,7 @@ void routesFrontEnd(void) {
 /// @warning CASO A PAGINA NAO SEJA ENCONTRADA RESPONDE COM O STATUS 404 "NOT FOUND"
 /// @note CASO TUDO OCORRA CORRETAMENTE RESPONDE COM STATUS 200 "OK"
 void home(void) {
-    File file = getFile(String(PATH_FRONT_END) + "/index.html");
+    File file = SD.open(String(PATH_FRONT_END) + "/index.html");
 
     if (!file) {
         frontEnd->send(404, "text/plain", "Erro 404: Pagina home nao existe (adicione um arquivo \"index.html\" na pasta \"" + String(PATH_FRONT_END) + "\")");
@@ -50,7 +50,7 @@ void home(void) {
 void getRoute(void) {
     String path = PATH_FRONT_END + cutUrl(frontEnd->uri(), '?') + (cutUrl(frontEnd->uri(), '?').indexOf(".") == -1 ? ".html" : "");
     String type = getType(path);
-    File file = getFile(path);
+    File file = SD.open(path);
 
     if (!file) {
         frontEnd->send(404, "text/plain", "Erro 404: \"" + frontEnd->uri() + "\" nao encontrado");

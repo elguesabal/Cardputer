@@ -4,6 +4,7 @@
 #include <M5Cardputer.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include <uri/UriBraces.h>
 #include <SPI.h>
 #include <SD.h>
 
@@ -34,7 +35,6 @@ void acessPointerStart(void);
 // ./sdCard.cpp
 void sdStart(void);
 bool checkPath(const char *path);
-File getFile(String path);
 void checkSD(void);
 
 // ./front-end.cpp
@@ -46,8 +46,7 @@ void getRoute(void);
 // ./back-end.cpp
 void backEndStart(void);
 void routesBackEnd(void);
-void getImg(void);
-void getJson(void);
+void getFile(void);
 void uploadFile(void);
 
 // ./utils.cpp

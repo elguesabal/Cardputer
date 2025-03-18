@@ -22,8 +22,9 @@ void routesBackEnd(void) {
     backEnd->on("/", []() {
         backEnd->send(200, "text/html", "Rota home");
     });
-    backEnd->on("/img", getImg);
-    backEnd->on("/json", getJson);
+    backEnd->on(UriBraces("/img/{}"), getFile);
+    backEnd->on(UriBraces("/json/{}"), getFile);
+    backEnd->on(UriBraces("/pdf/{}"), getFile);
     backEnd->on("/upload/img", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
     backEnd->on("/upload/json", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
     backEnd->on("/upload/pdf", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
@@ -32,41 +33,23 @@ void routesBackEnd(void) {
     });
 }
 
-/// @brief FUNTAO RESPOSNSAVEL PELA ROTA "/img" 
-/// @warning CASO O ARGUMENTO "img" ESTEJA AUSENTE RESPONDE COM O STATUS 400 "BAD REQUEST"
+/// @brief FUNTAO RESPOSNSAVEL PELAS ROTAS "/img/{}" "/json/{}" "/pdf/{}"
+/// @warning CASO O ARGUMENTO ESPERADO ESTEJA AUSENTE RESPONDE COM O STATUS 400 "BAD REQUEST"
 /// @warning CASO O ARQUIVO NAO SEJA ENCONTRADO RESPONDE COM O STATUS 404 "NOT FOUND"
-/// @note CASO TUDO OCORRA CORRETAMENTE RESPONDE COM STATUS 200 "OK"
-void getImg(void) {
-    String img = backEnd->arg("img");
-    if (!img.length()) {
-        backEnd->send(400, "text/plain", "Erro 400: Parametro \"img\" ausente.");
-        return ;
-    }
-    File file = getFile(PATH_BACK_END + String("/img/") + img);
-    if (!file) {
-        backEnd->send(404, "text/plain", "Erro 404: Arquivo \"" + img + "\" nao encontrada");
-        return ;
-    }
-    backEnd->streamFile(file, getType(img));
-    file.close();
-}
+/// @note CASO TUDO OCORRA CORRETAMENTE RESPONDE COM O ARQUIVO
+void getFile(void) {
+    String name = backEnd->pathArg(0);
+    File file = SD.open(PATH_BACK_END + backEnd->uri());
 
-/// @brief FUNTAO RESPOSNSAVEL PELA ROTA "/json" 
-/// @warning CASO O ARGUMENTO "json" ESTEJA AUSENTE RESPONDE COM O STATUS 400 "BAD REQUEST"
-/// @warning CASO O ARQUIVO NAO SEJA ENCONTRADO RESPONDE COM O STATUS 404 "NOT FOUND"
-/// @note CASO TUDO OCORRA CORRETAMENTE RESPONDE COM STATUS 200 "OK"
-void getJson(void) {
-    String json = backEnd->arg("json");
-    if (!json.length()) {
-        backEnd->send(400, "text/plain", "Erro 400: Parametro \"json\" ausente.");
+    if (!name.length()) {
+        backEnd->send(400, "text/plain", "Erro 400: Nome do arquivo ausente.");
         return ;
     }
-    File file = getFile(PATH_BACK_END + String("/json/") + json);
     if (!file) {
-        backEnd->send(404, "text/plain", "Erro 404: Arquivo \"" + json + "\" nao encontrada");
+        backEnd->send(404, "text/plain", "Erro 404: Arquivo \"" + backEnd->pathArg(0) + "\" nao encontrado");
         return ;
     }
-    backEnd->streamFile(file, getType(json));
+    backEnd->streamFile(file, getType(name));
     file.close();
 }
 
@@ -75,13 +58,13 @@ void getJson(void) {
 /// @warning CASO EXISTA UM ARQUIVO COM O MESMO NOME CITADO POR "name" NA MESMA PASTA RESPONDE COM 409 "CONFLICT"
 /// @note CASO TUDO OCORRA SEM ERROS ESTA FUNCAO NAO RESPONDE E SIM ESPERA Q SEJA PASSADO OUTRA FUNCAO DENTRO DO METODO "on" QUE RESPONDA COM STATUS 200
 void uploadFile(void) {
-    HTTPUpload &upload = backEnd->upload();
     static File file;
+    HTTPUpload &upload = backEnd->upload();
     String name = backEnd->arg("name");
     String path = PATH_BACK_END + backEnd->uri().substring(backEnd->uri().lastIndexOf('/')) + "/" + name;
 
     if (!name.length()) {
-        backEnd->send(400, "text/plain", "Erro 400: Campo \"name\" ausente");
+        backEnd->send(400, "text/plain", "Erro 400: Nome do arquivo ausente.");
         return ;
     }
     if (upload.status == UPLOAD_FILE_START) {

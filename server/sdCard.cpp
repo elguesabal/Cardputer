@@ -22,13 +22,6 @@ bool checkPath(const char *path) {
     return (SD.exists(path));
 }
 
-/// @brief BUSCA UM ARQUIVO NO CARTAO SD E RETORNA O FILEDESCRIPTION
-/// @param path CAMINHO DO ARQUIVO COMPLETO
-/// @return RETONAR UMA OBJETO File QUE CONTEM O FD (O USUARIO DEVE VERIFICAR SE O ARQUIVO FOI ABERTO)
-File getFile(String path) {
-    return (SD.open(path.c_str()));
-}
-
 /// @brief VERIFICA SE O CARTAO SD CONTINUA PRESENTE E CASO TENHA SIDO REMOVIDO PAUSA O PROGRAMA ATE UM CARTAO SER INSERIDO
 void checkSD(void) {
     if (!SD.open("/")) {
