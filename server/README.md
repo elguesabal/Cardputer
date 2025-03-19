@@ -62,27 +62,198 @@ Fazendo uploado do binário
 3. Utilize a API back-end conforme a documentação da API.
 
 
-## Documentação da API de teste
+## Documentação das rotas
 
-### Front end
+### Front end (porta 80)
 
-#### Retorna todos os itens
+#### Página inicial
 
-```http
-  GET "/"
+```
+GET /
 ```
 
-#### Retorna 2 possíveis respostas:
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| Nenhum | - | - | Retorna a página `index.html` da pasta `Front-end`. |
 
-status(200): 
-```http
-  <arquivo>.html
+Se o arquivo `/Front-end/index.html` não existir, retorna:
+```
+Status 404: Pagina home nao existe (adicione um arquivo "index.html" na pasta "PATH_FRONT_END").
 ```
 
-status(404):
-```http
-  Erro 404: Pagina home nao existe (adicione um arquivo "index.html" na pasta "Back-end\")
+Se ocorrer tudo certo retorna:
+```
+Status 200: Envia o arquivo "/PATH_FRONT_END/index.html"
 ```
 
+#### Rota Not Found
 
-### Back end
+```
+GET /{path}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| {path} | String | Sim | Usa o `{path}` como caminho para um arquivo no cartão SD. |
+
+Se o caminho `{path}` não corresponder a um arquivo dentro de `PATH_FRONT_END` retorna:
+```
+Status 404: {path} nao encontrado
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Envia o arquivo html encontrado em "PATH_FRONT_END/{path}"
+```
+
+### Back end (porta 4242)
+
+#### Rota get imagem
+
+```
+GET /img/{}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| {file} | String | Sim | Nome da imagem a ser buscado dentro de "/PATH_BACK_END/img/". |
+
+Se `{file}` não for passado, retorna:
+```
+Status 400: Nome do arquivo ou diretório ausente.
+```
+
+Se a imagem `{file}` não corresponder a um arquivo dentro de `/PATH_FRONT_END/img/` retorna:
+```
+Status 404: {file} nao encontrado
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Envia a imagem encontrado em "PATH_BACK_END/img/{file}"
+```
+
+#### Rota get json
+
+```
+GET /json/{}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| {file} | String | Sim | Nome do json a ser buscado dentro de "/PATH_BACK_END/json/". |
+
+Se `{file}` não for passado, retorna:
+```
+Status 400: Nome do arquivo ou diretório ausente.
+```
+
+Se a imagem `{file}` não corresponder a um arquivo dentro de `/PATH_FRONT_END/json/` retorna:
+```
+Status 404: {file} nao encontrado
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Envia o json encontrado em "PATH_BACK_END/json/{file}"
+```
+
+#### Rota get pdf
+
+```
+GET /pdf/{}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| {file} | String | Sim | Nome do pdf a ser buscado dentro de "/PATH_BACK_END/pdf/". |
+
+Se `{file}` não for passado, retorna:
+```
+Status 400: Nome do arquivo ou diretório ausente.
+```
+
+Se a imagem `{file}` não corresponder a um arquivo dentro de `/PATH_FRONT_END/pdf/` retorna:
+```
+Status 404: {file} nao encontrado
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Envia o pdf encontrado em "PATH_BACK_END/pdf/{file}"
+```
+
+#### Rota upload img
+
+```
+GET upload/img/{}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| name | String | Sim | Nome dado ao arquivo carregado. |
+
+Se `name` não for passado, retorna:
+```
+Status 400: Nome do arquivo ausente.
+```
+
+Se já existir uma imagem com esse mesmo nome e extensão no mesmo diretório restorna:
+```
+Status 409: Arquivo com este nome ja existente.
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Salva a imagem em "PATH_BACK_END/upload/img/{file}" e envia apenas o status.
+```
+
+#### Rota upload json
+
+```
+GET upload/json/{}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| name | String | Sim | Nome dado ao arquivo carregado. |
+
+Se `name` não for passado, retorna:
+```
+Status 400: Nome do arquivo ausente.
+```
+
+Se já existir um json com esse mesmo nome e extensão no mesmo diretório restorna:
+```
+Status 409: Arquivo com este nome ja existente.
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Salva o json em "PATH_BACK_END/upload/json/{file}" e envia apenas o status.
+```
+
+#### Rota upload pdf
+
+```
+GET upload/pdf/{}
+```
+
+| Parâmetro | Tipo  | Obrigatorio | Descrição |
+|-----------|-------|-------------|-----------|
+| name | String | Sim | Nome dado ao arquivo carregado. |
+
+Se `name` não for passado, retorna:
+```
+Status 400: Nome do arquivo ausente.
+```
+
+Se já existir um pdf com esse mesmo nome e extensão no mesmo diretório restorna:
+```
+Status 409: Arquivo com este nome ja existente.
+```
+
+Se ocorrer tudo certo retorna:
+```
+Status 200: Salva o pdf em "PATH_BACK_END/upload/pdf/{file}" e envia apenas o status.
+```

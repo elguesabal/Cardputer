@@ -29,7 +29,7 @@ void routesBackEnd(void) {
     backEnd->on("/upload/json", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
     backEnd->on("/upload/pdf", HTTP_POST, []() { backEnd->send(200, "text/plain", ""); }, uploadFile);
     backEnd->onNotFound([]() {
-        backEnd->send(404, "text/plain", "Erro 404: Rota nao encontrada");
+        backEnd->send(404, "text/plain", "Erro 404: Rota nao encontrada.");
     });
 }
 
@@ -42,11 +42,11 @@ void getFile(void) {
     File file = SD.open(PATH_BACK_END + backEnd->uri());
 
     if (!name.length()) {
-        backEnd->send(400, "text/plain", "Erro 400: Nome do arquivo ausente.");
+        backEnd->send(400, "text/plain", "Erro 400: Nome do arquivo ou diretório ausente.");
         return ;
     }
     if (!file) {
-        backEnd->send(404, "text/plain", "Erro 404: Arquivo \"" + backEnd->pathArg(0) + "\" nao encontrado");
+        backEnd->send(404, "text/plain", "Erro 404: Arquivo \"" + backEnd->pathArg(0) + "\" nao encontrado.");
         return ;
     }
     backEnd->streamFile(file, getType(name));
@@ -69,7 +69,7 @@ void uploadFile(void) {
     }
     if (upload.status == UPLOAD_FILE_START) {
         if (checkPath(path.c_str())) {
-            backEnd->send(409, "text/plain", "Erro 409: Arquivo com este nome ja existente");
+            backEnd->send(409, "text/plain", "Erro 409: Arquivo com este nome ja existente.");
             return ;
         }
         file = SD.open(path, FILE_WRITE);

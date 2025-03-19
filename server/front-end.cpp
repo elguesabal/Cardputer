@@ -30,7 +30,7 @@ void routesFrontEnd(void) {
     frontEnd->onNotFound(getRoute);
 }
 
-/// @brief RESPONDE A ROTA HOME CASO TENHA O ARQUIVO "/Pages/index.html"
+/// @brief RESPONDE A ROTA HOME CASO TENHA O ARQUIVO "/PATH_FRONT_END/index.html"
 /// @warning CASO A PAGINA NAO SEJA ENCONTRADA RESPONDE COM O STATUS 404 "NOT FOUND"
 /// @note CASO TUDO OCORRA CORRETAMENTE RESPONDE COM STATUS 200 "OK"
 void home(void) {
