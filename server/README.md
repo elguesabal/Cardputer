@@ -1,8 +1,14 @@
 # Cardputer WiFi Server
-
-Este repositório contém o código para transformar o **M5Stack Cardputer** em um ponto de acesso WiFi, fornecendo uma interface web armazenada no cartão SD e uma API back-end para interação.
+- [Visão Geral](#Visão-Geral)
+- [Estrutura do Projeto](#Estrutura-do-Projeto)
+- [Funcionalidades](#Funcionalidades)
+- [Compilando e rodando pelo cmd no Windows](#Compilando-e-rodando-pelo-cmd-no-Windows)
+- [Uso](#Uso)
+- [Documentação das rotas](#Documentação-das-rotas)
 
 ## Visão Geral
+
+Este repositório contém o código para transformar o **M5Stack Cardputer** em um ponto de acesso WiFi, fornecendo uma interface web armazenada no cartão SD e uma API back-end para interação.
 
 O projeto cria um **servidor WiFi** no Cardputer, permitindo que dispositivos conectados acessem:
 - **Front-end**: Páginas HTML armazenadas na pasta `Front-end` do cartão SD.
@@ -29,18 +35,18 @@ Cardputer/
 - **API back-end**: Processa requisições HTTP e retorna respostas dinâmicas.
 - **Gerenciamento de conexões**: Permite acesso simultâneo de múltiplos dispositivos.
 
-## Rodando localmente pelo cmd no Windows
+## Compilando e rodando pelo cmd no Windows
 
 Clone o projeto
 
 ```bash
-  git clone <link do repositório>
+  git clone <link_do_repositório>
 ```
 
 Entre no diretório do projeto
 
 ```bash
-  cd <diretório do projeto>
+  cd <diretório_do_projeto>
 ```
 
 Compile o projeto para binário
@@ -57,10 +63,14 @@ Fazendo uploado do binário
 
 ## Uso
 
-1. Conecte-se ao WiFi criado pelo Cardputer.
-2. Acesse o front-end via navegador digitando o endereço do servidor.
-3. Utilize a API back-end conforme a documentação da API.
+1. Ligue o CardPuter normalmente com o bin instalado como mencionado acima.
+2. Conecte seu smartphone, notebook ou PC ao Wi-Fi criado pelo Cardputer. Use o SSID e a senha exibidos na tela.
+3. Abra o navegador e acesse o front-end digitando o endereço IP do servidor. Os arquivos estão localizados no diretório '/PATH_FRONT_END/'.
+4. Utilize a API back-end conforme a documentação de teste ou personalize as rotas, se necessário, antes de compilar o código. Os arquivos estão no diretório '/PATH_BACK_END/'.
 
+![Image](https://github.com/user-attachments/assets/98e10ba6-67c3-4d83-991c-2005a2e30210)
+![Image](https://github.com/user-attachments/assets/bcf97de4-065a-4668-8d45-7e996203400b)
+![Image](https://github.com/user-attachments/assets/db1878e0-c383-4461-b41d-c956e40e941b)
 
 ## Documentação das rotas
 
