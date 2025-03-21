@@ -1,35 +1,40 @@
 #include "header.h"
 
 /// @brief CONECTA A UMA REDE WIFI JA EXISTENTE
-/// @param ssid NOME DO WIFI
-/// @param password SENHA DO WIFI
-/// @return RETORNA true SE DEU TUDO CERTO E false SE OUVE ALGUM ERRO
-bool connectWifi(const char *ssid, const char *password) {
-    WiFi.begin(ssid, password);
+void connectWifi(void) {
+    #if defined(PASSWORD_WIFI)
+        WiFi.begin(SSID_WIFI, PASSWORD_WIFI);
+    #else
+        WiFi.begin(SSID_WIFI);
+    #endif
 
     while (WiFi.status() != WL_CONNECTED && WiFi.status() != WL_NO_SSID_AVAIL && WiFi.status() != WL_CONNECT_FAILED) {
-        M5Cardputer.Display.print("conectando\n");
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("conectando...");
+        #endif
         delay(1000);
     }
 
-    switch (WiFi.status()) {
-        case WL_CONNECTED:
-            M5Cardputer.Display.printf("Conectado ao Wi-Fi: %s%c", WiFi.localIP().toString().c_str(), '\n');
-            return (true);
-        case WL_NO_SSID_AVAIL:
-            M5Cardputer.Display.print("SSID não encontrado\n");
-            return (false);
-        case WL_CONNECT_FAILED:
-            M5Cardputer.Display.print("Falha na conexão. Verifique a senha\n");
-            return (false);
-        case WL_CONNECTION_LOST:
-            M5Cardputer.Display.print("Conexão perdida\n");
-            return (false);
-        case WL_DISCONNECTED:
-            M5Cardputer.Display.print("Não conectado\n");
-            return (false);
-        default:
-            M5Cardputer.Display.print("Status desconhecido\n");
-            return (false);
-    }
+    #if defined(M5CARDPUTER)
+        switch (WiFi.status()) {
+            case WL_CONNECTED:
+                M5CARDPUTER.printf("Conectado ao Wi-Fi: %s\n", SSID_WIFI);
+                return ;
+            case WL_NO_SSID_AVAIL:
+                M5CARDPUTER.println("SSID não encontrado");
+                return ;
+            case WL_CONNECT_FAILED:
+                M5CARDPUTER.println("Falha na conexão. Verifique a senha");
+                return ;
+            case WL_CONNECTION_LOST:
+                M5CARDPUTER.println("Conexão perdida");
+                return ;
+            case WL_DISCONNECTED:
+                M5CARDPUTER.println("Não conectado");
+                return ;
+            default:
+                M5CARDPUTER.println("Status desconhecido");
+                return ;
+        }
+    #endif
 }

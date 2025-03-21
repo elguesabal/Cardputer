@@ -3,37 +3,23 @@
 
 #include <M5Cardputer.h>
 #include <WiFi.h>
-#include <DNSServer.h>
-#include <set>
 
+#define M5CARDPUTER M5Cardputer.Display             // DISPLAY DO CARDPUTER (PODE REMOVER CASO NAO QUERIA QUE O CARDPUTER INICIA A TELA)
 
+#define SSID_WIFI "ELGUESABAL"                  // NOME DA REDE WIFI
+#define PASSWORD_WIFI "12345678"                // SENHA DA REDE WIFI (PODE REMOVER CASO NAO EXIJA SENHA)
 
-// Definindo um comparador para WiFiClient
-// struct WiFiClientCompare {
-//     bool operator()(const WiFiClient& a, const WiFiClient& b) const {
-//         if (a.remoteIP() != b.remoteIP()) {
-//             return a.remoteIP() < b.remoteIP();  // Ordena pelo IP
-//         }
-//         return a.remotePort() < b.remotePort();  // Desempata pela porta
-//     }
-// };
+#define SSID_ACCESS_POINT "vampeta"             // NOME DO PONTO DE ACESSO CRIADO PELO CARDPUTER
+#define PASSWORD_ACCESS_POINT "12345678"        // SENHA DO PONTO DE ACESSO (PODE REMOVER CASO NAO QUEIRA SENHA)
 
-// Criando um std::set com o comparador
-// std::set<WiFiClient, WiFiClientCompare> clients;
-
-
-#define DNS_PORT 53
-
-extern WiFiServer server;
-extern DNSServer dnsServer;
+// ./display.cpp
+void cardputerStart(void);
+void vampeta(void);
 
 // ./wifi.cpp
-bool connectWifi(const char *ssid, const char *password);
+void connectWifi(void);
 
-// ./router.cpp
-bool routerWifi(const char *ssid, const char *password);
-
-// ./comm.cpp
-String request(std::string url, uint16_t port, String requestClient);
+// ./access point.cpp
+void accessPointStart(void);
 
 #endif
