@@ -1,14 +1,16 @@
 #include "header.h"
 
 WebServer server(80);
+DNSServer dnsServer;
 // WiFiClient client;
 
 void setup(void) {
-    debugStart();
+    // debugStart();
     cardputerStart();
     connectWifi();
     accessPointStart();
     serverStart();
+    dnsStart();
 
 
     // if (client.connect("google.com", 443)) {
@@ -27,6 +29,7 @@ void loop(void) {
     //     Serial.println(client.readStringUntil('\n'));
     // }
 
+    dnsServer.processNextRequest();
     server.handleClient();
     delay(2);
 }

@@ -4,6 +4,7 @@
 #include <M5Cardputer.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include <DNSServer.h>
 
 #define M5CARDPUTER M5Cardputer.Display             // DISPLAY DO CARDPUTER (PODE REMOVER CASO NAO QUERIA QUE O CARDPUTER INICIA A TELA)
 
@@ -13,7 +14,11 @@
 #define SSID_ACCESS_POINT "vampeta"             // NOME DO PONTO DE ACESSO CRIADO PELO CARDPUTER
 #define PASSWORD_ACCESS_POINT "12345678"        // SENHA DO PONTO DE ACESSO (PODE REMOVER CASO NAO QUEIRA SENHA)
 
+#define PORT_DNS 53                             // PORTA DO DNS
+
 extern WebServer server;
+extern DNSServer dnsServer;
+// extern WiFiClient client;
 
 // ./debug.cpp
 void debugStart(void);
@@ -31,5 +36,9 @@ void accessPointStart(void);
 // ./server.cpp
 void serverStart(void);
 void request(void);
+String getUrl(void);
+
+// ./dns.cpp
+void dnsStart(void);
 
 #endif
