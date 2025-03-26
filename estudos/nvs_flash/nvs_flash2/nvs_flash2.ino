@@ -6,11 +6,9 @@ int32_t get(nvs_handle_t my_handle) {
     esp_err_t err = nvs_get_i32(my_handle, "counter_key", &read_value);
 
     if (err == ESP_OK) {
-        // M5Cardputer.Display.print("Valor lido da NVS: ");
-        // M5Cardputer.Display.print(read_value);
         return (read_value);
     } else if (err == ESP_ERR_NVS_NOT_FOUND) {
-        M5Cardputer.Display.println("Chave não encontrada");
+        M5Cardputer.Display.println("Chave nao encontrada");
         return (-1);
     } else {
         M5Cardputer.Display.println("Erro ao ler o valor");
@@ -22,7 +20,6 @@ void write(nvs_handle_t my_handle, int32_t counter) {
     esp_err_t err = nvs_set_i32(my_handle, "counter_key", counter);
 
     if (err == ESP_OK) {
-        // M5Cardputer.Display.println("Valor salvo com sucesso");
         nvs_commit(my_handle);
     } else {
         M5Cardputer.Display.println("Falha ao salvar o valor");
@@ -52,16 +49,15 @@ void setup(void) {
 
     // LE O VALOR
     int32_t n = get(my_handle);
-    if (n == -1) {
-        // NAO FAZ NADA PQ AINDA NAO FOI ESCRITO??
+    if (n == -1 || n > 50) {
         n = 0;
     } else if (n == -2) {
         return ;
     } else {
         n++;
-        M5Cardputer.Display.print("n: ");
-        M5Cardputer.Display.println(n);
     }
+    M5Cardputer.Display.print("n: ");
+    M5Cardputer.Display.println(n);
 
     // EXCREVE O NOVO VALOR ENCREMENTADO
     write(my_handle, n);
