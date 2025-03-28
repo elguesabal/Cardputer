@@ -34,6 +34,13 @@ void setup(void) {
     wifi_init_config_t wifi_config = WIFI_INIT_CONFIG_DEFAULT();
     esp_wifi_init(&wifi_config);
     esp_wifi_set_mode(WIFI_MODE_STA);
+
+    // CONFIGURANDO SSID E SENHA
+    wifi_config_t wifi = {};
+    strcpy((char *)wifi.sta.ssid, "ELGUESABAL");
+    strcpy((char *)wifi.sta.password, "12345678");
+    esp_wifi_set_config(WIFI_IF_STA, &wifi);
+
     esp_wifi_start();
 }
 
