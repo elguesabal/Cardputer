@@ -2,18 +2,36 @@
 #include <esp_event.h>
 #include <esp_wifi.h>
 
-                // NAO FUNCIONA COMO ESPERADO
-
 uint8_t mac_ap[6];
 
 void access_point_handler(void *buf, wifi_promiscuous_pkt_type_t type) {
     const wifi_promiscuous_pkt_t *pkt = (wifi_promiscuous_pkt_t *)buf;
     const wifi_pkt_rx_ctrl_t *rx_ctrl = &pkt->rx_ctrl;
 
-    const uint8_t *mac_dest = pkt->payload;
+    // uint8_t *mac_dest = (uint8_t *)pkt->payload;
 
-    if (memcmp(mac_dest, mac_ap, 6) == 0) {
-        M5Cardputer.Display.printf("Pacote para o AP - RSSI: %d dBm\n", rx_ctrl->rssi);
+    // if (memcmp(mac_dest, mac_ap, 6) == 0) {
+    //     M5Cardputer.Display.printf("Pacote para o AP - RSSI: %d dBm\n", rx_ctrl->rssi);
+    // }
+
+    // M5Cardputer.Display.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", mac_ap[0], mac_ap[1], mac_ap[2], mac_ap[3], mac_ap[4], mac_ap[5]);
+    // M5Cardputer.Display.printf("%02X:%02X:%02X:%02X:%02X:%02X\n\n", mac_dest[0], mac_dest[1], mac_dest[2], mac_dest[3], mac_dest[4], mac_dest[5]);
+
+    if (type == WIFI_PKT_MGMT) {
+        uint8_t *mac_src = (uint8_t *)(pkt->payload + 6);
+
+        if (pkt->payload[0] == 0x00) {
+            M5Cardputer.Display.println("Association Request detectado");
+            M5Cardputer.Display.printf("%02X:%02X:%02X:%02X:%02X:%02X\n\n", mac_src[0], mac_src[1], mac_src[2], mac_src[3], mac_src[4], mac_src[5]);
+        }
+
+        // if (pkt->payload[0] == 0x40) {
+        //     M5Cardputer.Display.printf("Connection: %02X:%02X:%02X:%02X:%02X:%02X\n", mac_src[0], mac_src[1], mac_src[2], mac_src[3], mac_src[4], mac_src[5]);
+        // }
+
+        // if (pkt->payload[0] == 0x80) {
+        //     M5Cardputer.Display.println("Beacon detectado");
+        // }
     }
 }
 
