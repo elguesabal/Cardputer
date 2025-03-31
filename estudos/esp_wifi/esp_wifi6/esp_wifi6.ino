@@ -12,13 +12,14 @@ void access_point_handler(void *buf, wifi_promiscuous_pkt_type_t type) {
     }
     switch (pkt->payload[0]) {
         case 0x00:
-            M5Cardputer.Display.println("Association Request");
+            // M5Cardputer.Display.println("Association Request");
+            M5Cardputer.Display.println((char *)(pkt->payload + 24));
             break;
         case 0x40:
-            M5Cardputer.Display.println("Probe Request");
+            // M5Cardputer.Display.println("Probe Request");
             break;
         case 0x80:
-            M5Cardputer.Display.println("Beacon");
+            // M5Cardputer.Display.println("Beacon");
             break;
     }
 }
