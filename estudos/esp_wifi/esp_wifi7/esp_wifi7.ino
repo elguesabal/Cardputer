@@ -2,21 +2,6 @@
 #include <esp_event.h>
 #include <esp_wifi.h>
 
-uint8_t mac_ap[6];
-
-void access_point_handler(void *buf, wifi_promiscuous_pkt_type_t type) {
-    switch (type) {
-        case WIFI_PKT_MGMT:
-            M5Cardputer.Display.println("Pacote de Gerenciamento");
-            break;
-        case WIFI_PKT_DATA:
-            M5Cardputer.Display.println("Pacote de Dados");
-            break;
-        case WIFI_PKT_CTRL:
-            M5Cardputer.Display.println("Pacote de Controle");
-            break;
-    }
-}
 
 void setup(void) {
     M5Cardputer.begin();
@@ -37,13 +22,6 @@ void setup(void) {
     esp_wifi_set_config(WIFI_IF_AP, &access_point);
 
     esp_wifi_start();
-
-    // PEGA O MAC DO ACCESS POINT
-    esp_wifi_get_mac(WIFI_IF_AP, mac_ap);
-
-    // AVITA O MODO PROMISCUOUS
-    esp_wifi_set_promiscuous(true);
-    esp_wifi_set_promiscuous_rx_cb(&access_point_handler);
 }
 
 void loop(void) {
