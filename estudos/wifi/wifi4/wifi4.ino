@@ -5,6 +5,7 @@ WiFiServer server(80);
 
 void setup(void) {
     M5Cardputer.begin();
+    M5Cardputer.Display.setTextScroll(true);
     WiFi.softAP("vampeta");
     server.begin();
 }
@@ -13,15 +14,16 @@ void loop(void) {
     WiFiClient client = server.available();
 
     if (!client) return ;
+
+    unsigned long timeout = millis();
     String request = "";
-    delay(1000);
-    while (client.available()) {
-        char c = client.read();
-        request += c;
-        if (c == '\n') break;
+
+    while (client.connected() && millis() - timeout < 2000) {
+        while (client.available()) {
+            char c = client.read();
+            request += c;
+        }
     }
-
     M5Cardputer.Display.println(request);
-
     client.stop();
 }
