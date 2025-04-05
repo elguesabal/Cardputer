@@ -1,22 +1,25 @@
 #include "header.h"
 
-/// @brief INICIA O PONTO DE ACESSO WIFI
-void accessPointStart(void) {
+/// @brief INICIA O PONTO DE ACESSO WIFI E PRINTA NA TELA O SSID E PASSWORD
+void acessPointerStart(void) {
     #if defined(PASSWORD_ACCESS_POINT)
-        bool access_point = WiFi.softAP(SSID_ACCESS_POINT, PASSWORD_ACCESS_POINT);
+        bool wifi = WiFi.softAP(SSID_ACCESS_POINT, PASSWORD_ACCESS_POINT);
     #else
-        bool access_point = WiFi.softAP(SSID_ACCESS_POINT);
+        bool wifi = WiFi.softAP(SSID_ACCESS_POINT);
     #endif
-    if (!access_point) {
+    if (!wifi) {
         #if defined(M5CARDPUTER)
-            M5CARDPUTER.println("Falha na criacao no ponto de acesso");
+            M5CARDPUTER.println("Access point nao criado");
         #endif
-        return ;
+        while (true) {
+
+        }
     }
     #if defined(M5CARDPUTER)
-        M5CARDPUTER.printf("Ponto de acesso criado: %s\n", SSID_ACCESS_POINT);
+        M5CARDPUTER.println("Access point criado");
+        M5CARDPUTER.printf("Ssid: %s\n", SSID_ACCESS_POINT);
         #if defined(PASSWORD_ACCESS_POINT)
-            M5CARDPUTER.printf("Senha do ponto de acesso: %s\n", PASSWORD_ACCESS_POINT);
+            M5CARDPUTER.printf("Password: %s\n", PASSWORD_ACCESS_POINT);
         #endif
     #endif
 }

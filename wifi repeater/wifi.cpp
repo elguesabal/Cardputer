@@ -1,40 +1,35 @@
 #include "header.h"
 
-/// @brief CONECTA A UMA REDE WIFI JA EXISTENTE
-void connectWifi(void) {
+void wifiStart(void) {
+    WiFi.mode(WIFI_AP_STA);
     #if defined(PASSWORD_WIFI)
         WiFi.begin(SSID_WIFI, PASSWORD_WIFI);
     #else
         WiFi.begin(SSID_WIFI);
     #endif
-
-    while (WiFi.status() != WL_CONNECTED && WiFi.status() != WL_NO_SSID_AVAIL && WiFi.status() != WL_CONNECT_FAILED) {
-        #if defined(M5CARDPUTER)
-            M5CARDPUTER.println("conectando...");
-        #endif
-        delay(1000);
+    while (WiFi.status() == WL_IDLE_STATUS) {
+        delay(100);
     }
-
+    delay(500);
     #if defined(M5CARDPUTER)
         switch (WiFi.status()) {
-            case WL_CONNECTED:
-                M5CARDPUTER.printf("Conectado ao Wi-Fi: %s\n", SSID_WIFI);
-                return ;
             case WL_NO_SSID_AVAIL:
-                M5CARDPUTER.println("SSID não encontrado");
-                return ;
+                M5CARDPUTER.println("Wifi nao disponivel");
+                break;
+            case WL_CONNECTED:
+                M5CARDPUTER.println("Wifi conectado");
+                break;
             case WL_CONNECT_FAILED:
-                M5CARDPUTER.println("Falha na conexão. Verifique a senha");
-                return ;
-            case WL_CONNECTION_LOST:
-                M5CARDPUTER.println("Conexão perdida");
-                return ;
+                M5CARDPUTER.println("Senha incorreta");
+                break;
             case WL_DISCONNECTED:
-                M5CARDPUTER.println("Não conectado");
-                return ;
+                M5CARDPUTER.println("Desconectado");
+                break;
             default:
                 M5CARDPUTER.println("Status desconhecido");
-                return ;
         }
     #endif
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+    }
 }
