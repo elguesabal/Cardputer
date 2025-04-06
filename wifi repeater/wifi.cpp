@@ -10,7 +10,7 @@ void wifiStart(void) {
     while (WiFi.status() == WL_IDLE_STATUS) {
         delay(100);
     }
-    delay(500);
+    delay(1000);
     #if defined(M5CARDPUTER)
         switch (WiFi.status()) {
             case WL_NO_SSID_AVAIL:

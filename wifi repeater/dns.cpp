@@ -1,27 +1,49 @@
 #include "header.h"
 
-Dns::Dns(int port) {
-    this->pfd.fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (this->pfd.fd < 0) {
-        M5CARDPUTER.println("Erro ao criar socket DNS");
-        while (true) {
-            delay(1000);
-        }
-    }
-    memset(&this->dns, 0, sizeof(this->dns));
-    this->dns.sin_family = AF_INET;
-    this->dns.sin_port = htons(port);
-    this->dns.sin_addr.s_addr = INADDR_ANY;
-    if (bind(this->pfd.fd, (struct sockaddr *)&this->dns, sizeof(this->dns)) < 0) {
-        M5CARDPUTER.println("Erro ao associar o socket ao endereço e porta");
-        close(this->pfd.fd);
-        while (true) {
-            delay(1000);
-        }
-    }
-    M5CARDPUTER.println("Servidor DNS iniciado");
+Dns::Dns(int port, std::vector<pollfd> &fds) {
+    this->setPfd();
+    this->setDns(port);
+    this->setBind();
+
+    fds.push_back(this->_pfd);
+
+    #if defined(M5CARDPUTER)
+        M5CARDPUTER.println("Servidor DNS iniciado");
+    #endif
 }
 
 Dns::~Dns(void) {
 
+}
+
+void Dns::setPfd(void) {
+    this->_pfd.fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (this->_pfd.fd < 0) {
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Erro ao criar socket DNS");
+        #endif
+        while (true) {
+            delay(1000);
+        }
+    }
+    this->_pfd.events = POLLIN;
+}
+
+void Dns::setDns(int port) {
+    memset(&this->_dns, 0, sizeof(this->_dns));
+    this->_dns.sin_family = AF_INET;
+    this->_dns.sin_port = htons(port);
+    this->_dns.sin_addr.s_addr = INADDR_ANY;
+}
+
+void Dns::setBind(void) {
+    if (bind(this->_pfd.fd, (struct sockaddr *)&this->_dns, sizeof(this->_dns)) < 0) {
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Erro ao associar o socket ao endereço e porta");
+        #endif
+        close(this->_pfd.fd);
+        while (true) {
+            delay(1000);
+        }
+    }
 }

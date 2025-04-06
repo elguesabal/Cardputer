@@ -3,12 +3,16 @@
 
 class Dns {
     public:
-        Dns(int port);
+        Dns(int port, std::vector<pollfd> &fds);
         ~Dns(void);
 
+        void setPfd(void);
+        void setDns(int port);
+        void setBind(void);
+
     private:
-        struct sockaddr_in dns;
-        struct pollfd pfd;
+        struct sockaddr_in _dns;
+        struct pollfd _pfd;
 };
 
 #endif
