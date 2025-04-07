@@ -4,6 +4,7 @@ Dns::Dns(int port, std::vector<pollfd> &fds) {
     this->setPfd();
     this->setDns(port);
     this->setBind();
+    this->setListen();
 
     fds.push_back(this->_pfd);
 
@@ -42,6 +43,17 @@ void Dns::setBind(void) {
             M5CARDPUTER.println("Erro ao associar o socket ao endereço e porta");
         #endif
         close(this->_pfd.fd);
+        while (true) {
+            delay(1000);
+        }
+    }
+}
+
+void Dns::setListen(void) {
+    if (listen(this->_pfd.fd, 5) < 0) { // PQ RAIOS TA DANDO ERRO???
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Erro no listen()");
+        #endif
         while (true) {
             delay(1000);
         }
