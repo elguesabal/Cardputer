@@ -9,11 +9,12 @@ class Dns {
         void setPfd(void);
         void setDns(int port);
         void setBind(void);
-        void setListen(void);
+
+        void requestDns(void);
 
     private:
-        struct sockaddr_in _dns;
-        struct pollfd _pfd;
+        struct sockaddr_in _dns{};
+        struct pollfd _pfd{};
 };
 
 #endif
