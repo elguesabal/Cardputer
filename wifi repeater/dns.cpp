@@ -57,7 +57,9 @@ void Dns::requestDns(void) {
     ssize_t bytes_received = recvfrom(this->_pfd.fd, buffer, 512, 0, (sockaddr *)&client_addr, &client_len);
 
     if (bytes_received < 0) {
-        M5CARDPUTER.println("Erro no recvfrom()");
+        #if defined(M5CARDPUTER)
+            M5CARDPUTER.println("Erro no recvfrom()");
+        #endif
         close(this->_pfd.fd);
         return ;
     }
@@ -168,6 +170,6 @@ void Dns::requestDns(void) {
 
     close(upstream_sock); // ou mantenha aberto se for reutilizar
 
-    static int n = 0;
-    M5CARDPUTER.println(n++);
+    // static int n = 0;
+    // M5CARDPUTER.println(n++);
 }

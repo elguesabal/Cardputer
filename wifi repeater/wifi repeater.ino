@@ -2,12 +2,14 @@
 
 std::vector<pollfd> fds;
 Dns *dns;
+Http *http;
 
 void setup(void) {
     cardputerStart();
     wifiStart();
     acessPointerStart();
     dns = new Dns(DNS_PORT, fds);
+    http = new Http(HTTP_PORT, fds);
 }
 
 void loop(void) {
@@ -45,5 +47,16 @@ void loop(void) {
     }
     if (fds[0].revents & POLLIN) {
         dns->requestDns();
+
+        static int n_dns = 0;
+        n_dns++;
+        M5CARDPUTER.printf("requisicao dns: %d\n", n_dns);
+    }
+    if (fds[1].revents & POLLIN) {
+        // http->requestHttp();
+
+        static int n_http = 0;
+        n_http++;
+        M5CARDPUTER.printf("requisicao http: %d\n", n_http);
     }
 }

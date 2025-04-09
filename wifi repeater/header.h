@@ -3,10 +3,11 @@
 
 #include <M5Cardputer.h>
 #include <WiFi.h>
-#include <lwip/sockets.h>     // socket, bind, struct sockaddr_in etc.
-#include <lwip/netdb.h>       // struct hostent, gethostbyname etc.
-// #include <poll.h>             // pollfd (às vezes não está disponível em todas as toolchains do ESP)
-#include "dns.h"
+#include <lwip/sockets.h>
+#include <lwip/netdb.h>
+
+#include "dns.hpp"
+#include "http.hpp"
 
 #define M5CARDPUTER M5Cardputer.Display                          // DISPLAY DO CARDPUTER (PODE REMOVER CASO NAO QUERIA QUE O CARDPUTER INICIA A TELA)
 #define SSID_WIFI "ELGUESABAL"                                   // NOME DO WIFI
@@ -14,6 +15,7 @@
 #define SSID_ACCESS_POINT "vampeta"                              // NOME DO ACCESS POINT
 // #define PASSWORD_ACCESS_POINT "12345678"                      // SENHA DO ACCESS POINT (PODE REMOVER CASO NAO QUEIRA SENHA)
 #define DNS_PORT 53                                              // PORTA DO DNS
+#define HTTP_PORT 80                                             // PORTA HTTP
 
 // ./cardputer.cpp
 void cardputerStart(void);
