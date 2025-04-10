@@ -19,7 +19,7 @@ void setup(void) {
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     serverAddr.sin_port = htons(80);
 
-    bind(serverSock, (struct sockaddr *)&serverAddr, sizeof(serverAddr)); // TENHO Q VERIFICAR???
+    bind(serverSock, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 
     listen(serverSock, 5);
     M5Cardputer.Display.println("rodando na porta 80");

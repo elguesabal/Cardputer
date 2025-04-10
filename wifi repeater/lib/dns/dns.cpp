@@ -1,4 +1,15 @@
-#include "header.h"
+#include "dns.hpp"
+
+Dns::Dns(int port, std::vector<pollfd> &fds, M5GFX *M5CARDPUTER) {
+    this->setPfd();
+    this->setDns(port);
+    this->setBind();
+
+    fds.push_back(this->_pfd);
+
+    this->_display = M5CARDPUTER;
+    this->_display->println("Servidor DNS iniciado");
+}
 
 Dns::Dns(int port, std::vector<pollfd> &fds) {
     this->setPfd();
@@ -7,21 +18,19 @@ Dns::Dns(int port, std::vector<pollfd> &fds) {
 
     fds.push_back(this->_pfd);
 
-    #if defined(M5CARDPUTER)
-        M5CARDPUTER.println("Servidor DNS iniciado");
-    #endif
+    this->_display = nullptr;
 }
 
 Dns::~Dns(void) {
-
+    close(this->_pfd.fd);
 }
 
 void Dns::setPfd(void) {
     this->_pfd.fd = socket(AF_INET, SOCK_DGRAM, 0);
     if (this->_pfd.fd < 0) {
-        #if defined(M5CARDPUTER)
-            M5CARDPUTER.println("Erro ao criar socket DNS");
-        #endif
+        if (this->_display) {
+            this->_display->println("Erro ao criar socket DNS");
+        }
         while (true) {
             delay(1000);
         }
@@ -38,9 +47,9 @@ void Dns::setDns(int port) {
 
 void Dns::setBind(void) {
     if (bind(this->_pfd.fd, (struct sockaddr *)&this->_dns, sizeof(this->_dns)) < 0) {
-        #if defined(M5CARDPUTER)
-            M5CARDPUTER.println("Erro ao associar o socket ao endereço e porta");
-        #endif
+        if (this->_display) {
+            this->_display->println("Erro ao associar o socket ao endereço e porta");
+        }
         close(this->_pfd.fd);
         while (true) {
             delay(1000);
@@ -57,9 +66,9 @@ void Dns::requestDns(void) {
     ssize_t bytes_received = recvfrom(this->_pfd.fd, buffer, 512, 0, (sockaddr *)&client_addr, &client_len);
 
     if (bytes_received < 0) {
-        #if defined(M5CARDPUTER)
-            M5CARDPUTER.println("Erro no recvfrom()");
-        #endif
+        if (this->_display) {
+            this->_display->println("Erro no recvfrom()");
+        }
         close(this->_pfd.fd);
         return ;
     }

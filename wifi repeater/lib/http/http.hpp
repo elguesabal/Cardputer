@@ -1,6 +1,12 @@
 #ifndef HTTP_HPP
 # define HTTP_HPP
 
+#include <Arduino.h>
+#include <M5GFX.h>
+#include <vector>
+#include <lwip/sockets.h>
+#include <lwip/netdb.h>
+
 class Http {
     public:
         Http(int port, std::vector<pollfd> &fds);

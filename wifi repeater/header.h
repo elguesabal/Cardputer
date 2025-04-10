@@ -3,11 +3,12 @@
 
 #include <M5Cardputer.h>
 #include <WiFi.h>
-#include <lwip/sockets.h>
-#include <lwip/netdb.h>
+// #include <lwip/sockets.h>
+// #include <lwip/netdb.h>
 
 #include "dns.hpp"
 #include "http.hpp"
+#include "https.hpp"
 
 #define M5CARDPUTER M5Cardputer.Display                          // DISPLAY DO CARDPUTER (PODE REMOVER CASO NAO QUERIA QUE O CARDPUTER INICIA A TELA)
 #define SSID_WIFI "ELGUESABAL"                                   // NOME DO WIFI
@@ -16,6 +17,7 @@
 // #define PASSWORD_ACCESS_POINT "12345678"                      // SENHA DO ACCESS POINT (PODE REMOVER CASO NAO QUEIRA SENHA)
 #define DNS_PORT 53                                              // PORTA DO DNS
 #define HTTP_PORT 80                                             // PORTA HTTP
+#define HTTPS_PORT 443                                           // PORTA HTTPS
 
 // ./cardputer.cpp
 void cardputerStart(void);
