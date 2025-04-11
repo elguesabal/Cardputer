@@ -9,6 +9,7 @@
 
 class Https {
     public:
+        Https(int port, std::vector<pollfd> &fds, M5GFX *M5CARDPUTER);
         Https(int port, std::vector<pollfd> &fds);
         ~Https(void);
 
@@ -18,6 +19,7 @@ class Https {
         void setListen(void);
 
     private:
+        M5GFX *_display;
         struct sockaddr_in _https{};
         struct pollfd _pfd{};
 };

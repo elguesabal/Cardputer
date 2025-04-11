@@ -9,10 +9,16 @@ void setup(void) {
     cardputerStart();
     wifiStart();
     acessPointerStart();
-    // dns = new Dns(DNS_PORT, fds);
-    dns = new Dns(DNS_PORT, fds, &M5CARDPUTER);
-    http = new Http(HTTP_PORT, fds);
-    https = new Https(HTTPS_PORT, fds);
+
+    #if defined(M5CARDPUTER)
+        dns = new Dns(DNS_PORT, fds, &M5CARDPUTER);
+        http = new Http(HTTP_PORT, fds, &M5CARDPUTER);
+        https = new Https(HTTPS_PORT, fds, &M5CARDPUTER);
+    #else
+        dns = new Dns(DNS_PORT, fds);
+        http = new Http(HTTP_PORT, fds);
+        https = new Https(HTTPS_PORT, fds);
+    #endif
 }
 
 void loop(void) {
