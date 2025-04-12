@@ -1,5 +1,5 @@
 #ifndef HTTPS_HPP
-# define HTTPS_HPP
+#define HTTPS_HPP
 
 #include <Arduino.h>
 #include <M5GFX.h>

@@ -1,5 +1,5 @@
 #ifndef HTTP_HPP
-# define HTTP_HPP
+#define HTTP_HPP
 
 #include <Arduino.h>
 #include <M5GFX.h>

@@ -1,11 +1,12 @@
 #ifndef HEADER_H
-# define HEADER_H
+#define HEADER_H
 
 #include <M5Cardputer.h>
-#include <WiFi.h>
+// #include <WiFi.h>
 // #include <lwip/sockets.h>
 // #include <lwip/netdb.h>
 
+#include "WiFiNAT.h"
 #include "dns.hpp"
 #include "http.hpp"
 #include "https.hpp"

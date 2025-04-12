@@ -1,5 +1,5 @@
 #ifndef DNS_HPP
-# define DNS_HPP
+#define DNS_HPP
 
 #include <Arduino.h>
 #include <M5GFX.h>
