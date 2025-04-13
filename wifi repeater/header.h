@@ -2,7 +2,6 @@
 #define HEADER_H
 
 #include <M5Cardputer.h>
-// #include <WiFi.h>
 // #include <lwip/sockets.h>
 // #include <lwip/netdb.h>
 
