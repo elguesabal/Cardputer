@@ -22,7 +22,7 @@
 
  */
 
-#include "WiFiNAT.h"
+#include "WiFiCustom.h"
 #include "WiFiGeneric.h"
 
 extern "C" {

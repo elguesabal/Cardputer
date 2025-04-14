@@ -5,7 +5,7 @@
 // #include <lwip/sockets.h>
 // #include <lwip/netdb.h>
 
-#include "WiFiNAT.h"
+#include "WiFiCustom.h"
 #include "dns.hpp"
 #include "http.hpp"
 #include "https.hpp"

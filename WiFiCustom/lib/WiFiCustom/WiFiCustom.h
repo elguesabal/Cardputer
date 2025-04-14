@@ -46,9 +46,7 @@ public:
     WiFiClass()
     {
         prov_enable = false;
-        this->teste = "vampeta";
     }
-    String teste;
 
     using WiFiGenericClass::channel;
 

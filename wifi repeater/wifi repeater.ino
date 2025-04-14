@@ -8,7 +8,6 @@ Https *https;
 void setup(void) {
     cardputerStart();
     wifiStart();
-    M5CARDPUTER.println(WiFi.teste);
     acessPointerStart();
 
     #if defined(M5CARDPUTER)

@@ -26,7 +26,7 @@
 #ifndef WIFICLIENTMULTI_H_
 #define WIFICLIENTMULTI_H_
 
-#include "WiFiNAT.h"
+#include "WiFiCustom.h"
 #include <vector>
 
 typedef struct {

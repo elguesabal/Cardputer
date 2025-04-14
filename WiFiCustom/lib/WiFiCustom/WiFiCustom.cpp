@@ -21,7 +21,7 @@
  Reworked on 28 Dec 2015 by Markus Sattler
 
  */
-#include "WiFiNAT.h"
+#include "WiFiCustom.h"
 
 extern "C" {
 #include <stdint.h>

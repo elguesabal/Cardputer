@@ -18,7 +18,7 @@
 */
 
 #include "WiFiClient.h"
-#include "WiFiNAT.h"
+#include "WiFiCustom.h"
 #include <lwip/sockets.h>
 #include <lwip/netdb.h>
 #include <errno.h>
