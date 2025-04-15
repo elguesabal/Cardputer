@@ -1,5 +1,4 @@
 
-
 class WiFiNAT {
     public:
         WiFiNAT(void);
