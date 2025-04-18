@@ -4,6 +4,7 @@
 void setup(void) {
     M5Cardputer.begin();
 
+    WiFi.softAP("vampeta");
 }
 
 void loop(void) {
