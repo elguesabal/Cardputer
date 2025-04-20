@@ -20,6 +20,7 @@ O projeto cria um **servidor WiFi** no Cardputer, permitindo que dispositivos co
 Cardputer/
 ├── backEnd.cpp         # Inicia o back end e define rotas
 ├── cardputer.cpp       # Inicia a parte gráfica
+├── dns.cpp             # Inicia o domínio "vampeta.com"
 ├── front-end.cpp       # Inicia o front end e define rotas
 ├── header.h            # Arquivos de cabeçalho
 ├── sdCard.cpp          # Funções de suporte ao cartão SD
@@ -73,6 +74,8 @@ Fazendo uploado do binário
 ![Image](https://github.com/user-attachments/assets/db1878e0-c383-4461-b41d-c956e40e941b)
 
 ## Documentação das rotas
+
+As rotas podem ser acessadas pelo ip padrão "192.168.4.1" ou o domínio "vampeta.com".
 
 ### Front end (porta 80)
 
